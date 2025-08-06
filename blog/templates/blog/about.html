@@ -1,7 +1,21 @@
 {% extends "blog/base.html" %}
 {% block content %}
 
-    <h1>About this company</h1>
-    <p>Thanks for checking it out!</p>
-
+    <h1>About this blog</h1>
+    <hr>
+    <p>This is my first full stack web project, developed using the Django framework!</p>
+    <p>Applying the knowledge and skills I learnt in a Django bootcamp, I implemented many useful features for a blog site, including:</p>
+    <ul>
+        <li>Login/Logoff system for blog staff (admin and registered users authorized to post).</li>
+        <li>Create and save a post draft.</li>
+        <li>Apply styles to comments and post text body with the <a href='https://github.com/yabwe/medium-editor'>Medium Editor</a> inline toolbar.</li>
+        <li>Edit or delete unpublished post drafts (as a blog staff).</li>
+        <li>Publish a draft as a new post.</li>
+        <li>Edit or delete a published post (as a blog staff).</li>
+        <li>Add a comment in a post as a visitor.</li>
+        <li>Approve or disapprove comments (as a blog staff).</li>
+        <li>Show all published posts on the homepage as a list, including title, publish date and amount of comments in the post.</li>
+    </ul>
+    <p>Source code is publicly available in my <a href="https://github.com/hernanfiorito/my-blog-website">Github repository</a>.</p>
+    
 {% endblock %}
