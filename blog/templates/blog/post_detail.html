@@ -6,15 +6,15 @@
         <div class="date postdate">
             {{ post.published_date }}
         </div>
-    {% else %}
-        <a class="btn btn-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
     {% endif %}
 
     <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
     
     <div class="d-flex mb-3">
         <div class="me-auto">
-            <a class="btn btn-primary" href="{% url 'add_comment_to_post' pk=post.pk %}">Add a comment</a>
+        {% if not post.published_date %}
+            <a class="btn btn-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+        {% endif %}
         </div>
     {% if user.is_authenticated %}
         <div class="ps-2">
@@ -32,25 +32,32 @@
 
 
     <hr>
-    <div class="container">
-        <h3>Comments</h3>
-        {% for comment in post.comments.all %}
-            {% if user.is_authenticated or comment.approved_comment %}
-            <p>{{ comment.text|safe|linebreaksbr }}</p>
-            <p>Posted by: {{ comment.author }}</p>
-            {{ comment.created_date }}
-                {% if not comment.approved_comment %}
-                    <a class='btn btn-danger' href="{% url 'comment_remove' pk=comment.pk %}">
-                        <i class="bi bi-ban"></i>
-                    </a>
-                    <a class='btn btn-primary' href="{% url 'comment_approve' pk=comment.pk %}">
-                        <i class="bi bi-check-lg"></i>
-                    </a>
-                {% endif %}
-                <hr>
-            {% endif %}
-            {% empty %}
-            <p>This post has no comments.</p>
-        {% endfor %}
-    </div>
+    {% if post.published_date %}
+        <div class="container">
+            <div class="d-flex mb-3">
+                <div class="me-auto">
+                    <h3>Comments</h3>
+                </div>
+                <div class="ps-2">
+                    <a class="btn btn-primary" href="{% url 'add_comment_to_post' pk=post.pk %}">Add a comment</a>
+                </div>
+            </div>
+            {% for comment in post.comments.all reversed %}
+                <p>{{ comment.text|safe|linebreaksbr }}</p>
+                <p>Posted by: {{ comment.author }}</p>
+                {{ comment.created_date }}
+                    {% if user.is_authenticated and not comment.approved_comment%}
+                        <a class='btn btn-danger' href="{% url 'comment_remove' pk=comment.pk %}">
+                            <i class="bi bi-ban"></i>
+                        </a>
+                        <a class='btn btn-primary' href="{% url 'comment_approve' pk=comment.pk %}">
+                            <i class="bi bi-check-lg"></i>
+                        </a>
+                    {% endif %}
+                    <hr>
+                {% empty %}
+                <p>This post has no comments.</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
